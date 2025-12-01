@@ -46,9 +46,6 @@ Before starting this workshop, ensure you have:
 - [ ] Stable internet connection
 - [ ] Basic understanding of APIs
 
-### Time Estimate
-- **Total Workshop Duration:** 2-3 hours
-- **Recommended Breaks:** Every 45 minutes
 
 ---
 
