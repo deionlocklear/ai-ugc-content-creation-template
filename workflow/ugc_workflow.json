@@ -1,0 +1,15 @@
+{
+  "note": "Replace this file with your actual n8n workflow JSON (ugc_workflow.json).",
+  "instructions": [
+    "1. Open your n8n instance",
+    "2. Export your UGC workflow as JSON",
+    "3. Replace this placeholder file with your exported workflow",
+    "4. Ensure all credentials are sanitized before committing"
+  ],
+  "placeholders": {
+    "api_key": "YOUR_API_KEY_HERE",
+    "client_id": "YOUR_CLIENT_ID_HERE",
+    "client_secret": "YOUR_CLIENT_SECRET_HERE"
+  }
+}
+

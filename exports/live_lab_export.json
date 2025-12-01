@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "templateName": "AI UGC Content Creation LiveLab",
+    "version": "1.0.0",
+    "exportDate": "2025-01-01T00:00:00.000Z",
+    "description": "Complete LiveLab template for AI-powered UGC content creation workflows"
+  },
+  "workshop": {
+    "title": "AI UGC Content Creation LiveLab",
+    "duration": "2-3 hours",
+    "difficulty": "Intermediate",
+    "modules": [
+      {
+        "id": 1,
+        "name": "OpenAI Setup",
+        "duration": "30 minutes",
+        "objectives": [
+          "Create OpenAI account",
+          "Generate API key",
+          "Configure billing"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Google Cloud Platform OAuth Configuration",
+        "duration": "30 minutes",
+        "objectives": [
+          "Create GCP project",
+          "Configure OAuth consent screen",
+          "Generate OAuth credentials"
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Google AI Studio Setup",
+        "duration": "20 minutes",
+        "objectives": [
+          "Access Google AI Studio",
+          "Create API key",
+          "Configure billing if required"
+        ]
+      },
+      {
+        "id": 4,
+        "name": "n8n Workflow Platform",
+        "duration": "30 minutes",
+        "objectives": [
+          "Set up Google Drive credentials",
+          "Configure OpenAI credentials",
+          "Set up Header Auth credentials"
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Building the UGC Workflow",
+        "duration": "45 minutes",
+        "objectives": [
+          "Create workflow nodes",
+          "Configure AI text generation",
+          "Set up Google Drive integration"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Testing & Deployment",
+        "duration": "15 minutes",
+        "objectives": [
+          "Test workflow execution",
+          "Verify content creation",
+          "Deploy to production"
+        ]
+      }
+    ]
+  },
+  "requirements": {
+    "accounts": [
+      "Google Account",
+      "OpenAI Account",
+      "n8n Account"
+    ],
+    "apis": [
+      "OpenAI API",
+      "Google Drive API",
+      "Google AI Studio API"
+    ]
+  },
+  "credentials": {
+    "openai": {
+      "apiKey": "YOUR_API_KEY_HERE"
+    },
+    "googleCloud": {
+      "clientId": "YOUR_CLIENT_ID_HERE",
+      "clientSecret": "YOUR_CLIENT_SECRET_HERE"
+    },
+    "googleAIStudio": {
+      "apiKey": "YOUR_API_KEY_HERE"
+    }
+  },
+  "screenshots": {
+    "total": 36,
+    "categories": {
+      "openai": "01-09",
+      "n8n_overview": "10",
+      "n8n_credentials": "11-16",
+      "google_ai_studio": "17-20",
+      "n8n_workflow": "21-30",
+      "gcp_billing": "31-36"
+    }
+  },
+  "notes": [
+    "All API keys shown are placeholders - replace with your actual keys",
+    "Never commit real API keys to version control",
+    "Screenshots should be added by the user",
+    "Workflow JSON should be replaced with actual n8n export"
+  ]
+}
+
