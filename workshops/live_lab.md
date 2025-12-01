@@ -23,10 +23,28 @@
 Welcome to the **AI UGC Content Creation LiveLab**! This workshop will guide you through building a complete automated content creation pipeline using:
 
 - 🤖 **OpenAI** - For AI-powered text and image generation
-- ☁️ **Google Cloud Platform** - For OAuth authentication
+- ☁️ **Google Cloud Platform** - For OAuth authentication and Google Drive API
 - 🧠 **Google AI Studio** - For additional AI capabilities
 - 🔄 **n8n** - For workflow automation
 - 📁 **Google Drive** - For content storage and organization
+
+### Workshop Structure
+
+This workshop is divided into clear modules:
+
+**Modules 1-4: Credential Setup** (Complete these first)
+- **Module 1:** Get your OpenAI API key
+- **Module 2:** Get Google Cloud OAuth Client ID & Secret, enable Google Drive API
+- **Module 3:** Get your Google AI Studio API key
+- **Module 4:** Add all credentials to n8n
+
+**Module 5: Workflow Import** (After credentials are ready)
+- Import the pre-built workflow into n8n
+- Update workflow nodes to use your credentials
+
+**Module 6: Testing & Deployment**
+- Test your workflow
+- Deploy to production
 
 By the end of this workshop, you'll have a fully functional system that can automatically generate, process, and organize AI-created content.
 
@@ -50,6 +68,12 @@ Before starting this workshop, ensure you have:
 ---
 
 ## Module 1: OpenAI Setup
+
+**Goal:** Obtain your OpenAI API key for AI content generation.
+
+**What you'll get:** OpenAI API key (starts with `sk-proj-...`)
+
+---
 
 ### 1.1 Creating Your OpenAI Account
 
@@ -120,6 +144,15 @@ To use the API beyond free credits:
 
 ## Module 2: Google Cloud Platform OAuth Configuration
 
+**Goal:** Get OAuth Client ID and Secret for Google Drive integration, and enable the Google Drive API.
+
+**What you'll get:** 
+- OAuth Client ID
+- OAuth Client Secret
+- Google Drive API enabled
+
+---
+
 ### 2.1 Creating OAuth Credentials
 
 For Google Drive integration, you'll need OAuth 2.0 credentials.
@@ -144,7 +177,20 @@ Before creating OAuth credentials, configure the consent screen:
    - Developer contact information
 4. Add scopes for Google Drive
 
-### 2.3 Setting Authorized Redirect URIs
+### 2.3 Enabling Google Drive API
+
+Before you can use Google Drive with n8n, you must enable the Google Drive API in your GCP project:
+
+1. In the Google Cloud Console, navigate to **APIs & Services** > **Library**
+2. Search for **"Google Drive API"**
+3. Click on **Google Drive API** from the results
+4. Click **Enable** to activate the API for your project
+
+   > 📸 **Note:** Screenshot needed for this step. The Enable button will be visible on the Google Drive API page.
+
+   ⚠️ **Note:** If you don't see the Enable button, the API may already be enabled. You can verify this in the **APIs & Services** > **Enabled APIs** section.
+
+### 2.4 Setting Authorized Redirect URIs
 
 For n8n integration, add the callback URL:
 
@@ -154,9 +200,19 @@ https://your-n8n-instance.com/rest/oauth2-credential/callback
 
 Replace `your-n8n-instance.com` with your actual n8n URL.
 
+**For n8n Cloud users:** Use `https://oauth.n8n.cloud/oauth2/callback`
+
+**For self-hosted n8n:** Use your n8n instance URL followed by `/rest/oauth2-credential/callback`
+
 ---
 
 ## Module 3: Google AI Studio Setup
+
+**Goal:** Obtain your Google AI Studio API key for Gemini API access.
+
+**What you'll get:** Google AI Studio API key
+
+---
 
 ### 3.1 Accessing Google AI Studio
 
@@ -215,9 +271,20 @@ If your project requires billing:
 
    ![GCP Billing Overview with Free Trial](../screenshots/36_gcp_billing_overview_with_free_trial_credit.png)
 
+   ⚠️ **Important Note:** To move into Tier 1 (beyond free tier limits), you may need to add a credit card to your Google Cloud billing account. The free trial provides $300 in credits, but some services require a payment method on file to access Tier 1 quotas.
+
 ---
 
 ## Module 4: n8n Workflow Platform
+
+**Goal:** Add all your credentials to n8n so the workflow can authenticate with external services.
+
+**What you'll create:**
+- Google Drive OAuth2 credential in n8n
+- OpenAI API credential in n8n
+- Header Auth credential for Google AI Studio in n8n
+
+---
 
 ### 4.1 Accessing n8n
 
@@ -255,81 +322,112 @@ If your project requires billing:
 
 4. Enter your API key: `YOUR_API_KEY_HERE`
 
-### 4.4 Setting Up Header Auth Credentials
+### 4.4 Setting Up Header Auth Credentials (For Google AI Studio)
 
-For custom API integrations:
+For Google AI Studio API integration, you'll need to set up Header Auth credentials:
 
-1. Search for **Header Auth**
+1. In n8n, go to **Credentials** and click **Add Credential**
+2. Search for **Header Auth**
 
    ![n8n Add Credential Header Auth Search](../screenshots/15_n8n_add_credential_header_auth_search.png)
 
-2. Configure the header authentication
+3. Configure the header authentication:
+   - **Name:** `x-goog-api-key`
+   - **Value:** Your Google AI Studio API key (from Module 3.3)
 
    ![n8n Header Auth Credential Connection Form](../screenshots/16_n8n_header_auth_credential_connection_form.png)
 
+4. Click **Save** to store the credential
+
+### 4.5 Credential Summary
+
+By the end of Module 4, you should have created the following credentials in n8n:
+
+- ✅ **Google Drive OAuth2** - Using Client ID and Client Secret from Module 2
+- ✅ **OpenAI API** - Using API key from Module 1.4
+- ✅ **Header Auth (x-goog-api-key)** - Using Google AI Studio API key from Module 3.3
+
+Make sure all credentials are saved and test each one to ensure they're working correctly before proceeding to Module 5.
+
 ---
 
-## Module 5: Building the UGC Workflow
+## Module 5: Importing and Configuring the UGC Workflow
 
-### 5.1 Workflow Overview
+Now that you have all your credentials set up in n8n, it's time to import the pre-built workflow and connect it to your credentials.
 
-The UGC workflow consists of several interconnected nodes:
+### 5.1 Downloading the Workflow
 
-1. **Trigger** - Initiates the workflow
-2. **AI Text Generation** - Creates content using OpenAI
-3. **AI Image Generation** - Creates visuals
-4. **Google Drive Upload** - Stores the content
-5. **Notification** - Confirms completion
+1. Navigate to the `workflow/` folder in this repository
+2. Open `ugc_workflow.json` in a text editor
+3. Copy the entire JSON contents
 
-### 5.2 Step-by-Step Workflow Building
+   > **Note:** If you have your own workflow file, use that instead. The workflow JSON should contain all the nodes and connections for your UGC content creation pipeline.
 
-![n8n Workflow Building Step 1](../screenshots/21_n8n_screen_01.png)
+### 5.2 Importing the Workflow into n8n
 
-![n8n Workflow Building Step 2](../screenshots/22_n8n_screen_02.png)
+1. Log into your n8n instance
+2. Click **Workflows** in the left sidebar
+3. Click the **Import** button (usually in the top right)
+4. Choose one of these options:
+   - **Paste JSON:** Paste the workflow JSON directly
+   - **Upload File:** Upload the `ugc_workflow.json` file
+5. Click **Import** to add the workflow to n8n
 
-![n8n Workflow Building Step 3](../screenshots/23_n8n_screen_03.png)
+   ![n8n Overview Workflows List](../screenshots/10_n8n_overview_workflows_list.png)
 
-![n8n Workflow Building Step 4](../screenshots/24_n8n_screen_04.png)
+### 5.3 Updating Workflow Nodes with Your Credentials
 
-![n8n Workflow Building Step 5](../screenshots/25_n8n_screen_05.png)
+After importing, you need to update each node to use the credentials you created in Modules 1-4:
 
-![n8n Workflow Building Step 6](../screenshots/26_n8n_screen_06.png)
+#### 5.3.1 Update OpenAI Nodes
 
-![n8n Workflow Building Step 7](../screenshots/27_n8n_screen_07.png)
+1. Click on any **OpenAI** node in the workflow
+2. In the node configuration panel, find the **Credential** dropdown
+3. Select your **OpenAI credential** (created in Module 4.3)
+4. Repeat for all OpenAI nodes in the workflow
 
-![n8n Workflow Building Step 8](../screenshots/28_n8n_screen_08.png)
+#### 5.3.2 Update Google Drive Nodes
 
-![n8n Workflow Building Step 9](../screenshots/29_n8n_screen_09.png)
+1. Click on any **Google Drive** node in the workflow
+2. In the node configuration panel, find the **Credential** dropdown
+3. Select your **Google Drive OAuth2 credential** (created in Module 4.2)
+4. Complete the OAuth flow if prompted (this authorizes n8n to access your Google Drive)
+5. Repeat for all Google Drive nodes in the workflow
 
-![n8n Workflow Building Step 10](../screenshots/30_n8n_screen_10.png)
+#### 5.3.3 Update Google AI Studio Nodes (If Present)
 
-### 5.3 Workflow Configuration
+1. Click on any node that uses Google AI Studio API (typically HTTP Request nodes)
+2. In the node configuration, find the **Authentication** section
+3. Select **Header Auth** or **Generic Credential Type**
+4. Choose your **Header Auth credential** with `x-goog-api-key` (created in Module 4.4)
+5. Verify the header name is set to `x-goog-api-key`
+6. Repeat for all Google AI Studio nodes
 
-```json
-{
-  "name": "UGC Content Creator",
-  "nodes": [
-    {
-      "name": "Trigger",
-      "type": "n8n-nodes-base.manualTrigger"
-    },
-    {
-      "name": "OpenAI",
-      "type": "n8n-nodes-base.openAi",
-      "credentials": {
-        "openAiApi": "YOUR_API_KEY_HERE"
-      }
-    },
-    {
-      "name": "Google Drive",
-      "type": "n8n-nodes-base.googleDrive",
-      "credentials": {
-        "googleDriveOAuth2Api": "YOUR_CLIENT_ID_HERE"
-      }
-    }
-  ]
-}
-```
+### 5.4 Verifying Node Connections
+
+1. Review each node in the workflow to ensure:
+   - ✅ All credential fields are populated with your credentials
+   - ✅ No red error indicators are present
+   - ✅ Node connections (the lines between nodes) are intact
+   - ✅ Required parameters are filled in
+
+2. Common nodes to check:
+   - **Trigger nodes** - Ensure they're configured correctly
+   - **OpenAI nodes** - Verify model selection and API key
+   - **Google Drive nodes** - Confirm folder paths and permissions
+   - **HTTP Request nodes** - Check URLs and authentication
+
+### 5.5 Workflow Overview
+
+Your imported workflow should include nodes for:
+
+- **Trigger** - Initiates the workflow (Manual, Webhook, or Schedule)
+- **AI Content Generation** - Uses OpenAI for text/image creation
+- **Google AI Studio Integration** - Uses Header Auth for Gemini API calls
+- **Google Drive Operations** - Uploads and organizes generated content
+- **Data Processing** - Transforms and formats content as needed
+
+> 💡 **Tip:** If you're unsure which credential to use for a node, check the node's documentation or look for credential type indicators in the node configuration panel.
 
 ---
 
