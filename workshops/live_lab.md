@@ -198,17 +198,23 @@ Before creating OAuth credentials, you must configure the OAuth consent screen. 
 
 Before you can use Google Drive with n8n, you must enable the Google Drive API in your GCP project:
 
-1. In the Google Cloud Console, navigate to **APIs & Services** > **Library**
-2. Use the search bar (similar to how you searched for Google Auth Platform) to search for **"Google Drive API"**
+1. In the Google Cloud Console, use the search bar at the top to search for **"Google Drive API"**
 
-   > 💡 **Tip:** You can use the same search interface shown in the Google Auth Platform search screenshot above.
+   ![GCP Search for Google Drive API](../screenshots/37_gcp_search_google_drive_api.png)
 
-3. Click on **Google Drive API** from the results
-4. Click **Enable** to activate the API for your project
+2. Click on **Google Drive API** from the search results (it will appear in the "Top results" or "Marketplace" section)
 
-   > 📸 **Note:** Screenshot needed for this step. The Enable button will be visible on the Google Drive API page. The interface will be similar to other API enablement pages in GCP.
+3. You'll be taken to the Google Drive API product details page. Click the blue **Enable** button to activate the API for your project
 
-   ⚠️ **Note:** If you don't see the Enable button, the API may already be enabled. You can verify this in the **APIs & Services** > **Enabled APIs** section.
+   ![GCP Google Drive API Product Details](../screenshots/38_gcp_google_drive_api_product_details.png)
+
+4. After enabling, you'll be redirected to the API/Service Details page where you can verify the API is enabled
+
+   ![GCP Google Drive API Enabled](../screenshots/39_gcp_google_drive_api_enabled.png)
+
+   ✅ **Verification:** You should see **Status: Enabled** on this page, confirming the API is active for your project.
+
+   ⚠️ **Note:** If you don't see the Enable button on the product details page, the API may already be enabled. You can verify this in the **APIs & Services** > **Enabled APIs** section.
 
 ### 2.4 Setting Authorized Redirect URIs
 
