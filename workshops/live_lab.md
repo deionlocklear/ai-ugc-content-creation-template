@@ -159,50 +159,81 @@ For Google Drive integration, you'll need OAuth 2.0 credentials.
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
 2. Create a new project or select an existing one
-3. Navigate to **APIs & Services** > **Credentials**
-4. Click **Create Credentials** > **OAuth client ID**
-5. Select **Web application**
+
+   ![GCP Console Welcome](../screenshots/21_n8n_screen_01.png)
+
+3. Navigate to **APIs & Services** > **Library** or search for "Google Auth Platform"
+
+   ![GCP Search for Google Auth Platform](../screenshots/22_n8n_screen_02.png)
+
+4. Click on **Google Auth Platform** from the search results
+5. Navigate to **APIs & Services** > **Credentials** (or use the Google Auth Platform sidebar)
+6. Click **Create Credentials** > **OAuth client ID**
+7. Select **Web application**
 
    ![GCP OAuth Client Web App](../screenshots/01_gcp_oauth_client_web_app.png)
 
 ### 2.2 Configuring OAuth Consent Screen
 
-Before creating OAuth credentials, configure the consent screen:
+Before creating OAuth credentials, you must configure the OAuth consent screen. If you haven't set this up yet, you'll see a message indicating it's not configured:
 
-1. Go to **OAuth consent screen**
-2. Select **External** user type
-3. Fill in required fields:
-   - App name
-   - User support email
-   - Developer contact information
-4. Add scopes for Google Drive
+![GCP OAuth Overview Not Configured](../screenshots/23_n8n_screen_03.png)
+
+1. Click **Get started** or navigate to **OAuth consent screen** from the Google Auth Platform sidebar
+2. Select **External** user type (for most use cases)
+3. Fill in the **App Information** step:
+   - **App name** - Choose a name for your application
+   - **User support email** - Your email address
+
+   ![GCP OAuth Consent Screen App Information](../screenshots/24_n8n_screen_04.png)
+
+4. Complete the remaining steps:
+   - **Audience** - Select who can use your app
+   - **Contact Information** - Add developer contact details
+5. Add scopes for Google Drive (if not already added):
+   - Look for scopes like `https://www.googleapis.com/auth/drive` or `https://www.googleapis.com/auth/drive.file`
+6. Complete the consent screen setup
 
 ### 2.3 Enabling Google Drive API
 
 Before you can use Google Drive with n8n, you must enable the Google Drive API in your GCP project:
 
 1. In the Google Cloud Console, navigate to **APIs & Services** > **Library**
-2. Search for **"Google Drive API"**
+2. Use the search bar (similar to how you searched for Google Auth Platform) to search for **"Google Drive API"**
+
+   > 💡 **Tip:** You can use the same search interface shown in the Google Auth Platform search screenshot above.
+
 3. Click on **Google Drive API** from the results
 4. Click **Enable** to activate the API for your project
 
-   > 📸 **Note:** Screenshot needed for this step. The Enable button will be visible on the Google Drive API page.
+   > 📸 **Note:** Screenshot needed for this step. The Enable button will be visible on the Google Drive API page. The interface will be similar to other API enablement pages in GCP.
 
    ⚠️ **Note:** If you don't see the Enable button, the API may already be enabled. You can verify this in the **APIs & Services** > **Enabled APIs** section.
 
 ### 2.4 Setting Authorized Redirect URIs
 
-For n8n integration, add the callback URL:
+After creating your OAuth client, you'll see a confirmation modal with your Client ID and Client Secret:
 
-```
-https://your-n8n-instance.com/rest/oauth2-credential/callback
-```
+![GCP OAuth Client Created](../screenshots/27_n8n_screen_07.png)
 
-Replace `your-n8n-instance.com` with your actual n8n URL.
+**Important:** Save your Client ID and Client Secret immediately! You'll need these in Module 4.
+
+Now, configure the authorized redirect URIs:
+
+1. Navigate to your OAuth client details page (you can access this from the **Clients** tab in Google Auth Platform)
+2. Scroll to the **Authorized redirect URIs** section
+3. Click **+ Add URI**
+4. Add the callback URL for n8n:
+
+   ![GCP OAuth Client Details with Redirect URIs](../screenshots/30_n8n_screen_10.png)
 
 **For n8n Cloud users:** Use `https://oauth.n8n.cloud/oauth2/callback`
 
 **For self-hosted n8n:** Use your n8n instance URL followed by `/rest/oauth2-credential/callback`
+
+5. Click **Save** to apply the changes
+
+> ⚠️ **Note:** It may take 5 minutes to a few hours for settings to take effect.
 
 ---
 
@@ -366,14 +397,16 @@ Now that you have all your credentials set up in n8n, it's time to import the pr
 ### 5.2 Importing the Workflow into n8n
 
 1. Log into your n8n instance
-2. Click **Workflows** in the left sidebar
-3. Click the **Import** button (usually in the top right)
+2. Click **Workflows** in the left sidebar (or use the **Overview** page)
+
+   ![n8n Overview Workflows List](../screenshots/10_n8n_overview_workflows_list.png)
+
+3. Click the **Import** button (usually in the top right, or use the dropdown menu from the "Create Workflow" button)
 4. Choose one of these options:
    - **Paste JSON:** Paste the workflow JSON directly
    - **Upload File:** Upload the `ugc_workflow.json` file
 5. Click **Import** to add the workflow to n8n
-
-   ![n8n Overview Workflows List](../screenshots/10_n8n_overview_workflows_list.png)
+6. The workflow will appear in your workflows list
 
 ### 5.3 Updating Workflow Nodes with Your Credentials
 
@@ -384,6 +417,11 @@ After importing, you need to update each node to use the credentials you created
 1. Click on any **OpenAI** node in the workflow
 2. In the node configuration panel, find the **Credential** dropdown
 3. Select your **OpenAI credential** (created in Module 4.3)
+
+   > 💡 **Reference:** The credential selection interface will look similar to the OpenAI credential form you saw in Module 4.3. The dropdown will show all your saved OpenAI credentials.
+
+   ![n8n OpenAI Credential Connection Form](../screenshots/14_n8n_openai_credential_connection_form.png)
+
 4. Repeat for all OpenAI nodes in the workflow
 
 #### 5.3.2 Update Google Drive Nodes
@@ -391,7 +429,14 @@ After importing, you need to update each node to use the credentials you created
 1. Click on any **Google Drive** node in the workflow
 2. In the node configuration panel, find the **Credential** dropdown
 3. Select your **Google Drive OAuth2 credential** (created in Module 4.2)
+
+   > 💡 **Reference:** The credential selection interface will look similar to the Google Drive credential form you saw in Module 4.2.
+
+   ![n8n Google Drive OAuth2 Connection Form](../screenshots/12_n8n_google_drive_oauth2_connection_form.png)
+
 4. Complete the OAuth flow if prompted (this authorizes n8n to access your Google Drive)
+   - You may be redirected to Google to authorize access
+   - Click **Allow** to grant permissions
 5. Repeat for all Google Drive nodes in the workflow
 
 #### 5.3.3 Update Google AI Studio Nodes (If Present)
@@ -400,6 +445,11 @@ After importing, you need to update each node to use the credentials you created
 2. In the node configuration, find the **Authentication** section
 3. Select **Header Auth** or **Generic Credential Type**
 4. Choose your **Header Auth credential** with `x-goog-api-key` (created in Module 4.4)
+
+   > 💡 **Reference:** The credential selection interface will look similar to the Header Auth credential form you saw in Module 4.4.
+
+   ![n8n Header Auth Credential Connection Form](../screenshots/16_n8n_header_auth_credential_connection_form.png)
+
 5. Verify the header name is set to `x-goog-api-key`
 6. Repeat for all Google AI Studio nodes
 
