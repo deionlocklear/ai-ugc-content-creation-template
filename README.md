@@ -40,11 +40,14 @@ Before starting the workshop, ensure you have:
 2. **Read the workshop:**
    Open [`workshops/live_lab.md`](workshops/live_lab.md) and follow along step-by-step.
 
-3. **Import the workflow:**
-   Once you've completed the setup, import `workflow/ugc_workflow.json` into your n8n instance.
+3. **Obtain the workflow:**
+   The UGC Content Creation workflow is available as a premium digital asset. Purchase access to receive the complete workflow package, which includes:
+   - The n8n workflow JSON file
+   - Setup instructions
+   - Link to this workshop repository
 
-4. **Replace placeholders:**
-   Update all `YOUR_API_KEY_HERE` and `YOUR_CLIENT_ID_HERE` placeholders with your actual credentials.
+4. **Import and configure:**
+   Once you have the workflow, import it into your n8n instance and update the credentials as described in Module 5 of the workshop.
 
 ---
 
@@ -62,7 +65,7 @@ ai-ugc-content-creation-template/
 │   └── live_lab_export.json           # LiveLab template export (JSON)
 │
 ├── workflow/
-│   └── ugc_workflow.json              # n8n workflow file (replace with your own)
+│   └── ugc_workflow.json              # Placeholder - workflow available as premium asset
 │
 ├── screenshots/
 │   ├── 01_gcp_oauth_client_web_app.png
@@ -93,6 +96,18 @@ ai-ugc-content-creation-template/
 | [Installation Guide](docs/install_guide.md) | Detailed setup instructions |
 | [Troubleshooting](docs/troubleshooting.md) | Solutions to common issues |
 | [FAQs](docs/faqs.md) | Frequently asked questions |
+
+---
+
+## 💰 Workflow Availability
+
+The complete **"Automate UGC Content Creation with N8N and Sora 2"** workflow is available as a premium digital asset. The workflow package includes:
+
+- ✅ Complete n8n workflow JSON file
+- ✅ Setup and configuration guide  
+- ✅ Link to this workshop repository
+
+> **Note:** This public repository contains the **free workshop guide** that teaches you how to set up all the credentials and configure the workflow. The actual workflow file must be purchased separately.
 
 ---
 

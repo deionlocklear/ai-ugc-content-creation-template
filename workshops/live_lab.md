@@ -412,15 +412,25 @@ The **"Automate UGC Content Creation with N8N and Sora 2"** workflow automates t
 - **AI Services Used:** OpenAI (GPT-4o, Sora 2), Google AI Studio (Gemini 2.5)
 - **Output:** 3 UGC videos uploaded to Google Drive
 
-### 5.2 Downloading the Workflow
+### 5.2 Obtaining the Workflow
 
-1. Navigate to the `workflow/` folder in this repository
-2. Open `ugc_workflow.json` in a text editor
-3. Copy the entire JSON contents
+The UGC Content Creation workflow is available as a premium digital asset and is **not included** in this public repository.
+
+**To obtain the workflow:**
+
+1. Purchase access to the workflow through the designated platform
+2. Download the workflow package (ZIP file)
+3. Extract the contents, which include:
+   - `ugc_workflow.json` - The complete n8n workflow file
+   - `README.md` - Setup and usage instructions
+   - `workshop_link.md` - Link to this GitHub workshop repository
+
+4. Open `ugc_workflow.json` in a text editor
+5. Copy the entire JSON contents (or use the file directly)
 
    > **Note:** The workflow file contains all nodes, connections, and configurations. You'll need to update the credentials after importing.
 
-### 5.2 Importing the Workflow into n8n
+### 5.3 Importing the Workflow into n8n
 
 1. Log into your n8n instance
 2. Click **Workflows** in the left sidebar (or use the **Overview** page)
@@ -434,11 +444,11 @@ The **"Automate UGC Content Creation with N8N and Sora 2"** workflow automates t
 5. Click **Import** to add the workflow to n8n
 6. The workflow will appear in your workflows list
 
-### 5.3 Updating Workflow Nodes with Your Credentials
+### 5.4 Updating Workflow Nodes with Your Credentials
 
 After importing, you need to update each node to use the credentials you created in Modules 1-4. The workflow contains several node types that require credential configuration:
 
-#### 5.3.1 Update OpenAI Nodes
+#### 5.4.1 Update OpenAI Nodes
 
 The workflow uses OpenAI for persona generation, script extraction, and Sora 2 video generation. Update these nodes:
 
@@ -463,7 +473,7 @@ The workflow uses OpenAI for persona generation, script extraction, and Sora 2 v
 4. For HTTP Request nodes using OpenAI API, look for **Authentication** → **Predefined Credential Type** → **OpenAI API**
 5. Repeat for all OpenAI-related nodes in the workflow
 
-#### 5.3.2 Update Google Drive Nodes
+#### 5.4.2 Update Google Drive Nodes
 
 The workflow uses Google Drive to store generated videos:
 
@@ -484,7 +494,7 @@ The workflow uses Google Drive to store generated videos:
    - Click **Allow** to grant permissions
 5. **Optional:** Update the folder path in the node configuration if you want videos saved to a specific Google Drive folder
 
-#### 5.3.3 Update Google AI Studio (Gemini) Nodes
+#### 5.4.3 Update Google AI Studio (Gemini) Nodes
 
 The workflow uses Google AI Studio (Gemini) for script generation and first frame image creation:
 
@@ -507,7 +517,7 @@ The workflow uses Google AI Studio (Gemini) for script generation and first fram
    - `generate_ad_prompts` (Gemini 2.5 Pro)
    - `Generate First Frame Image` (Gemini 2.5 Flash Image Preview)
 
-### 5.4 Verifying Node Connections
+### 5.5 Verifying Node Connections
 
 After updating all credentials, verify the workflow is properly configured:
 
@@ -533,7 +543,7 @@ After updating all credentials, verify the workflow is properly configured:
    - Review the form trigger settings if you want to customize the input fields
    - Check video generation parameters (duration, size) if you want to modify defaults
 
-### 5.5 Workflow Execution Flow
+### 5.6 Workflow Execution Flow
 
 Understanding the workflow execution will help you troubleshoot if needed:
 
