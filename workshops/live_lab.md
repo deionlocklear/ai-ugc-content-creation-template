@@ -392,13 +392,33 @@ Make sure all credentials are saved and test each one to ensure they're working 
 
 Now that you have all your credentials set up in n8n, it's time to import the pre-built workflow and connect it to your credentials.
 
-### 5.1 Downloading the Workflow
+### 5.1 Understanding the Workflow
+
+The **"Automate UGC Content Creation with N8N and Sora 2"** workflow automates the creation of User-Generated Content (UGC) videos. Here's what it does:
+
+**Workflow Overview:**
+1. **Form Trigger** - Collects a product image and product name from users
+2. **Persona Generation** - Uses OpenAI to analyze the product and generate an ideal customer persona
+3. **Script Generation** - Uses Google AI Studio (Gemini) to create 3 authentic UGC video scripts based on the persona
+4. **Video Creation** - Generates 3 videos using OpenAI's Sora 2 model:
+   - Creates a first frame image using Gemini
+   - Generates 12-second videos with Sora 2
+   - Polls for video completion
+   - Downloads completed videos
+5. **Storage** - Uploads all generated videos to Google Drive
+
+**Key Components:**
+- **Input:** Product image (file) + Product name (text)
+- **AI Services Used:** OpenAI (GPT-4o, Sora 2), Google AI Studio (Gemini 2.5)
+- **Output:** 3 UGC videos uploaded to Google Drive
+
+### 5.2 Downloading the Workflow
 
 1. Navigate to the `workflow/` folder in this repository
 2. Open `ugc_workflow.json` in a text editor
 3. Copy the entire JSON contents
 
-   > **Note:** If you have your own workflow file, use that instead. The workflow JSON should contain all the nodes and connections for your UGC content creation pipeline.
+   > **Note:** The workflow file contains all nodes, connections, and configurations. You'll need to update the credentials after importing.
 
 ### 5.2 Importing the Workflow into n8n
 
@@ -416,11 +436,23 @@ Now that you have all your credentials set up in n8n, it's time to import the pr
 
 ### 5.3 Updating Workflow Nodes with Your Credentials
 
-After importing, you need to update each node to use the credentials you created in Modules 1-4:
+After importing, you need to update each node to use the credentials you created in Modules 1-4. The workflow contains several node types that require credential configuration:
 
 #### 5.3.1 Update OpenAI Nodes
 
-1. Click on any **OpenAI** node in the workflow
+The workflow uses OpenAI for persona generation, script extraction, and Sora 2 video generation. Update these nodes:
+
+**OpenAI LangChain Nodes:**
+- **"Generate Ideal Persona"** - Analyzes product image and creates customer persona
+- **"Extract Prompts"** - Extracts and formats video script prompts
+
+**HTTP Request Nodes (OpenAI API):**
+- **"Generate Video With SORA"** - Creates videos using Sora 2
+- **"Get Video Creation Status"** - Checks video generation status
+- **"Download Video"** - Downloads completed videos
+
+**Steps to Update:**
+1. Click on each OpenAI node in the workflow
 2. In the node configuration panel, find the **Credential** dropdown
 3. Select your **OpenAI credential** (created in Module 4.3)
 
@@ -428,11 +460,18 @@ After importing, you need to update each node to use the credentials you created
 
    ![n8n OpenAI Credential Connection Form](../screenshots/14_n8n_openai_credential_connection_form.png)
 
-4. Repeat for all OpenAI nodes in the workflow
+4. For HTTP Request nodes using OpenAI API, look for **Authentication** → **Predefined Credential Type** → **OpenAI API**
+5. Repeat for all OpenAI-related nodes in the workflow
 
 #### 5.3.2 Update Google Drive Nodes
 
-1. Click on any **Google Drive** node in the workflow
+The workflow uses Google Drive to store generated videos:
+
+**Google Drive Node:**
+- **"upload_video"** - Uploads completed videos to Google Drive
+
+**Steps to Update:**
+1. Click on the **"upload_video"** node in the workflow
 2. In the node configuration panel, find the **Credential** dropdown
 3. Select your **Google Drive OAuth2 credential** (created in Module 4.2)
 
@@ -443,47 +482,80 @@ After importing, you need to update each node to use the credentials you created
 4. Complete the OAuth flow if prompted (this authorizes n8n to access your Google Drive)
    - You may be redirected to Google to authorize access
    - Click **Allow** to grant permissions
-5. Repeat for all Google Drive nodes in the workflow
+5. **Optional:** Update the folder path in the node configuration if you want videos saved to a specific Google Drive folder
 
-#### 5.3.3 Update Google AI Studio Nodes (If Present)
+#### 5.3.3 Update Google AI Studio (Gemini) Nodes
 
-1. Click on any node that uses Google AI Studio API (typically HTTP Request nodes)
+The workflow uses Google AI Studio (Gemini) for script generation and first frame image creation:
+
+**HTTP Request Nodes (Gemini API):**
+- **"generate_ad_prompts"** - Generates 3 UGC video scripts using Gemini 2.5 Pro
+- **"Generate First Frame Image"** - Creates first frame image using Gemini 2.5 Flash Image Preview
+
+**Steps to Update:**
+1. Click on each HTTP Request node that calls Gemini API (look for URLs containing `generativelanguage.googleapis.com`)
 2. In the node configuration, find the **Authentication** section
-3. Select **Header Auth** or **Generic Credential Type**
+3. Select **Generic Credential Type** → **HTTP Header Auth**
 4. Choose your **Header Auth credential** with `x-goog-api-key` (created in Module 4.4)
 
    > 💡 **Reference:** The credential selection interface will look similar to the Header Auth credential form you saw in Module 4.4.
 
    ![n8n Header Auth Credential Connection Form](../screenshots/16_n8n_header_auth_credential_connection_form.png)
 
-5. Verify the header name is set to `x-goog-api-key`
-6. Repeat for all Google AI Studio nodes
+5. Verify the header name is set to `x-goog-api-key` in the node configuration
+6. Repeat for both Gemini API nodes:
+   - `generate_ad_prompts` (Gemini 2.5 Pro)
+   - `Generate First Frame Image` (Gemini 2.5 Flash Image Preview)
 
 ### 5.4 Verifying Node Connections
 
-1. Review each node in the workflow to ensure:
-   - ✅ All credential fields are populated with your credentials
-   - ✅ No red error indicators are present
+After updating all credentials, verify the workflow is properly configured:
+
+1. **Check Credentials:**
+   - ✅ All OpenAI nodes have your OpenAI credential selected
+   - ✅ Google Drive node has your Google Drive OAuth2 credential selected
+   - ✅ Both Gemini HTTP Request nodes have your Header Auth credential selected
+
+2. **Verify Node Connections:**
    - ✅ Node connections (the lines between nodes) are intact
-   - ✅ Required parameters are filled in
+   - ✅ No red error indicators are present on any nodes
+   - ✅ All required parameters are filled in
 
-2. Common nodes to check:
-   - **Trigger nodes** - Ensure they're configured correctly
-   - **OpenAI nodes** - Verify model selection and API key
-   - **Google Drive nodes** - Confirm folder paths and permissions
-   - **HTTP Request nodes** - Check URLs and authentication
+3. **Key Nodes to Verify:**
+   - **Form Trigger** - Should be active and ready to receive submissions
+   - **OpenAI Nodes** - Verify model selection (GPT-4o, GPT-5-mini, Sora 2)
+   - **Gemini HTTP Request Nodes** - Check URLs point to correct Gemini endpoints
+   - **Google Drive Node** - Confirm folder path is set (or will use default)
+   - **Video Generation Nodes** - Ensure Sora 2 API endpoints are correct
 
-### 5.5 Workflow Overview
+4. **Optional Configuration:**
+   - Update the Google Drive folder path in the `upload_video` node if you want videos saved to a specific location
+   - Review the form trigger settings if you want to customize the input fields
+   - Check video generation parameters (duration, size) if you want to modify defaults
 
-Your imported workflow should include nodes for:
+### 5.5 Workflow Execution Flow
 
-- **Trigger** - Initiates the workflow (Manual, Webhook, or Schedule)
-- **AI Content Generation** - Uses OpenAI for text/image creation
-- **Google AI Studio Integration** - Uses Header Auth for Gemini API calls
-- **Google Drive Operations** - Uploads and organizes generated content
-- **Data Processing** - Transforms and formats content as needed
+Understanding the workflow execution will help you troubleshoot if needed:
 
-> 💡 **Tip:** If you're unsure which credential to use for a node, check the node's documentation or look for credential type indicators in the node configuration panel.
+**Execution Flow:**
+1. **Form Submission** → User submits product image + name via form trigger
+2. **Image Processing** → Product image converted to base64 format
+3. **Persona Generation** → OpenAI analyzes product and generates ideal customer persona
+4. **Script Generation** → Gemini creates 3 authentic UGC video scripts
+5. **Script Extraction** → OpenAI formats scripts into structured prompts
+6. **Video Loop** (runs 3 times, once per script):
+   - **First Frame** → Gemini generates first frame image
+   - **Resize** → Image resized to video format (720x1280)
+   - **Video Generation** → Sora 2 creates 12-second video
+   - **Status Check** → Polls for video completion (with 15-second delays)
+   - **Download** → Downloads completed video
+   - **Upload** → Saves video to Google Drive
+
+**Expected Output:**
+- 3 UGC videos (12 seconds each, 720x1280 resolution)
+- Videos saved to Google Drive with names like "UGC Video #1", "UGC Video #2", "UGC Video #3"
+
+> 💡 **Tip:** The workflow includes retry logic and error handling. If a video generation fails, the workflow will retry automatically. Check the execution logs in n8n if you encounter issues.
 
 ---
 
