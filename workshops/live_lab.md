@@ -158,78 +158,94 @@ To use the API beyond free credits, you need to add payment details:
 
 ---
 
-## Module 2: Google Cloud Platform OAuth Configuration
+## Module 2: Google Cloud Platform Setup
 
-**Goal:** Get OAuth Client ID and Secret for Google Drive integration, and enable the Google Drive API.
+**Goal:** Create a GCP project, configure OAuth credentials, set up billing, and enable Google Drive API.
 
 **What you'll get:** 
+- GCP Project
 - OAuth Client ID
 - OAuth Client Secret
+- Billing account configured
 - Google Drive API enabled
 
 ---
 
-### 2.1 Configuring OAuth Consent Screen
+### 2.1 Creating a GCP Project
+
+Before you can configure OAuth and APIs, you need a Google Cloud Platform project.
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Click on the project selector at the top of the page (or click **Create Project** if you don't have any projects)
+
+   ![GCP Create Project Step 1](../screenshots/40_gcp_create_project_step1.png)
+
+3. Click **New Project** button
+
+   ![GCP Create Project Step 2](../screenshots/41_gcp_create_project_step2.png)
+
+4. Fill in the project details:
+   - **Project name** - Choose a descriptive name (e.g., "UGC Content Creation")
+   - **Project ID** - Will be auto-generated (you can customize it)
+   - **Location** - Select an organization or leave as "No organization"
+
+5. Click **Create**
+
+6. Wait for the project to be created. You'll see a confirmation when it's ready:
+
+   ![GCP Project Created](../screenshots/42_gcp_project_created.png)
+
+7. Make sure your new project is selected (check the project selector at the top)
+
+### 2.2 Configuring OAuth Consent Screen
 
 **Important:** You must configure the OAuth consent screen BEFORE you can create OAuth client credentials. This is a required first step.
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select an existing one
-
-   ![GCP Console Welcome](../screenshots/21_n8n_screen_01.png)
-
-3. Use the **search bar at the top of the page** (not the library search) to search for **"Google Auth Platform"**
+1. Use the **search bar at the top of the page** (not the library search) to search for **"Google Auth Platform"**
 
    > ⚠️ **Important:** Use the search bar that appears at the top of the Google Cloud Console page, not any search bar that appears within the APIs & Services Library section.
 
-   ![GCP Search for Google Auth Platform](../screenshots/22_n8n_screen_02.png)
+2. Click on **Google Auth Platform** from the search results
+3. Navigate to **OAuth consent screen** from the Google Auth Platform sidebar
 
-4. Click on **Google Auth Platform** from the search results
-5. Navigate to **OAuth consent screen** from the Google Auth Platform sidebar
+   ![GCP OAuth Consent Screen](../screenshots/43_gcp_oauth_consent_screen.png)
 
-If you haven't set this up yet, you'll see a message indicating it's not configured:
+4. If you haven't set this up yet, click **Get started** or select **External** user type (for most use cases)
 
-![GCP OAuth Overview Not Configured](../screenshots/23_n8n_screen_03.png)
-
-1. Click **Get started** or navigate to **OAuth consent screen** from the Google Auth Platform sidebar
-2. Select **External** user type (for most use cases)
-3. Fill in the **App Information** step:
+5. Fill in the **App Information** step:
    - **App name** - Choose a name for your application
    - **User support email** - Your email address
 
-   ![GCP OAuth Consent Screen App Information](../screenshots/24_n8n_screen_04.png)
+   ![GCP OAuth Consent App Information](../screenshots/44_gcp_oauth_consent_app_info.png)
 
-4. Complete the remaining steps:
+6. Complete the remaining steps:
    - **Audience** - Select who can use your app
    - **Contact Information** - Add developer contact details
-5. **Add scopes for Google Drive** - This is critical for Google Drive integration:
+
+7. **Add scopes for Google Drive** - This is critical for Google Drive integration:
    - In the OAuth consent screen configuration, navigate to the **Scopes** section
    - Click **Add or Remove Scopes**
+
+   ![GCP OAuth Consent Scopes](../screenshots/45_gcp_oauth_consent_scopes.png)
+
    - Search for and select:
      - `https://www.googleapis.com/auth/drive` (Full access to Google Drive)
      - OR `https://www.googleapis.com/auth/drive.file` (Access to files created by the app)
    - Click **Update** to save the scopes
 
-6. **Add Authorized Domains (for n8n Cloud users):**
+8. **Add Authorized Domains (for n8n Cloud users):**
    - In the OAuth consent screen configuration, navigate to **Authorized domains**
    - Click **Add Domain**
+
+   ![GCP OAuth Consent Authorized Domains](../screenshots/46_gcp_oauth_consent_authorized_domains.png)
+
    - Enter `n8n.cloud` (without https://)
    - Click **Add**
    - This is required for n8n Cloud to connect to your Google Drive
 
-7. Complete the consent screen setup
+9. Complete the consent screen setup
 
 > ⚠️ **Important:** Adding `n8n.cloud` to authorized domains is essential for n8n Cloud users. Without this, the Google Drive connection will fail even if you've added the correct scopes.
-
-### 2.2 Setting Authorized Redirect URIs
-
-Before creating your OAuth client, you should know what redirect URI you'll need. Configure this in the OAuth consent screen:
-
-1. In the OAuth consent screen configuration, navigate to **Authorized domains**
-2. For n8n Cloud users, you may need to add `n8n.cloud` as an authorized domain
-3. Note the redirect URI you'll use:
-   - **For n8n Cloud:** `https://oauth.n8n.cloud/oauth2/callback`
-   - **For self-hosted n8n:** Your n8n instance URL followed by `/rest/oauth2-credential/callback`
 
 ### 2.3 Creating OAuth Credentials
 
@@ -239,7 +255,7 @@ Now that the OAuth consent screen is configured, you can create your OAuth clien
 2. Click **Create Credentials** > **OAuth client ID**
 3. Select **Web application**
 
-   ![GCP OAuth Client Web App](../screenshots/01_gcp_oauth_client_web_app.png)
+   ![GCP OAuth Client Create](../screenshots/47_gcp_oauth_client_create.png)
 
 4. Fill in the required fields:
    - **Name** - Choose a name for your OAuth client (e.g., "Web client 1")
@@ -251,27 +267,49 @@ Now that the OAuth consent screen is configured, you can create your OAuth clien
 
 After creating your OAuth client, you'll see a confirmation modal with your Client ID and Client Secret:
 
-![GCP OAuth Client Created](../screenshots/27_n8n_screen_07.png)
+![GCP OAuth Client Created](../screenshots/48_gcp_oauth_client_created.png)
 
 **Important:** Save your Client ID and Client Secret immediately! You'll need these in Module 4.
 
-### 2.4 Enabling Google Drive API
+> ⚠️ **Note:** It may take 5 minutes to a few hours for settings to take effect.
+
+### 2.4 Setting Up Billing
+
+Before you can use Google AI Studio (Gemini API) and other paid services, you need to set up billing for your GCP project.
+
+1. In the Google Cloud Console, use the search bar at the top to search for **"Billing"**
+
+   ![GCP Billing Setup](../screenshots/49_gcp_billing_setup.png)
+
+2. Click on **Billing** from the search results
+3. Click **Link a billing account** or **Create billing account** if you don't have one
+
+   ![GCP Billing Account](../screenshots/50_gcp_billing_account.png)
+
+4. If creating a new billing account:
+   - Fill in your account details
+   - Add a payment method (credit card required)
+   - Complete the billing account setup
+
+5. Link your billing account to your project
+
+> ⚠️ **Important:** Billing is required for Google AI Studio (Gemini API) access. You'll need a credit card and must move to Tier 1 billing to use the Gemini API. See Module 3.4 for more details.
+
+### 2.5 Enabling Google Drive API
 
 Before you can use Google Drive with n8n, you must enable the Google Drive API in your GCP project:
 
 1. In the Google Cloud Console, use the search bar at the top to search for **"Google Drive API"**
 
-   ![GCP Search for Google Drive API](../screenshots/37_gcp_search_google_drive_api.png)
+   ![GCP Enable Drive API](../screenshots/51_gcp_enable_drive_api.png)
 
 2. Click on **Google Drive API** from the search results (it will appear in the "Top results" or "Marketplace" section)
 
 3. You'll be taken to the Google Drive API product details page. Click the blue **Enable** button to activate the API for your project
 
-   ![GCP Google Drive API Product Details](../screenshots/38_gcp_google_drive_api_product_details.png)
-
 4. After enabling, you'll be redirected to the API/Service Details page where you can verify the API is enabled
 
-   ![GCP Google Drive API Enabled](../screenshots/39_gcp_google_drive_api_enabled.png)
+   ![GCP Drive API Enabled](../screenshots/52_gcp_drive_api_enabled.png)
 
    ✅ **Verification:** You should see **Status: Enabled** on this page, confirming the API is active for your project.
 
