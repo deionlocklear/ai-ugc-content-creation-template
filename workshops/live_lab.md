@@ -105,6 +105,11 @@ OpenAI provides:
 - Pay-as-you-go pricing
 - Usage limits and caps
 
+> 💰 **Important Cost Information:**
+> - Each workflow run costs approximately **$10** but produces **3 videos**
+> - You'll need **at least $15** in your OpenAI account to run the workflow
+> - Make sure you have sufficient credits before testing the workflow
+
 ### 1.4 Creating Your API Key
 
 This is a critical step - your API key is how your applications authenticate with OpenAI.
@@ -131,14 +136,18 @@ This is a critical step - your API key is how your applications authenticate wit
 
 ### 1.5 Setting Up Billing
 
-To use the API beyond free credits:
+To use the API beyond free credits, you need to add payment details:
 
-1. Go to **Billing** settings
+1. From the OpenAI Platform home page, click your **profile icon** in the top right corner
+2. Click on **"Your profile"** from the dropdown menu
+3. Navigate to **Billing** settings
+4. Add your payment method
 
    ![OpenAI Billing Add Payment](../screenshots/09_openai_billing_add_payment_details.png)
 
-2. Add your payment method
-3. Set up usage limits (recommended)
+5. Set up usage limits (recommended)
+
+> ⚠️ **Important:** Make sure you have at least **$15** in your account balance before running the workflow. Each workflow run costs approximately **$10** and generates **3 videos**.
 
 ---
 
