@@ -114,21 +114,16 @@ OpenAI provides:
 
 This is a critical step - your API key is how your applications authenticate with OpenAI.
 
-**For first-time users or if you don't see a settings gear icon:**
+**Access Your Profile:**
 
 1. From the OpenAI Platform home page, click your **profile icon** in the top right corner
 2. Click on **"Your profile"** from the dropdown menu
+
+   ![OpenAI Platform Models Overview](../screenshots/03_openai_platform_models_overview.png)
+
 3. Navigate to **API Keys** section
 
    ![OpenAI API Keys via Profile](../screenshots/10_openai_api_keys_via_profile.png)
-
-**Alternative method (if settings gear icon is visible):**
-
-1. From the OpenAI Platform home page, click the **Settings gear icon** in the top right corner of the page
-
-   ![OpenAI Platform Dashboard](../screenshots/05_openai_platform_dashboard_return.png)
-
-2. In the settings menu, navigate to **API Keys** section
 
 **Creating the API Key:**
 

@@ -79,7 +79,7 @@ Before starting this workshop, ensure you have:
 
 1. Navigate to [platform.openai.com](https://platform.openai.com)
 
-   ![OpenAI Login Page](../screenshots/02_openai_login_page.png)
+   ![OpenAI Login Page](screenshots/02_openai_login_page.png)
 
 2. Click **Sign Up** or **Log In** if you already have an account
 
@@ -89,7 +89,7 @@ Before starting this workshop, ensure you have:
 
 Once logged in, you'll see the OpenAI Platform dashboard.
 
-![OpenAI Platform Models Overview](../screenshots/03_openai_platform_models_overview.png)
+![OpenAI Platform Models Overview](screenshots/03_openai_platform_models_overview.png)
 
 Take a moment to explore:
 - **Models** - Available AI models
@@ -98,7 +98,7 @@ Take a moment to explore:
 
 ### 1.3 Understanding Billing
 
-![OpenAI Billing Overview](../screenshots/04_openai_billing_overview_free_trial.png)
+![OpenAI Billing Overview](screenshots/04_openai_billing_overview_free_trial.png)
 
 OpenAI provides:
 - Free trial credits for new accounts
@@ -111,23 +111,23 @@ This is a critical step - your API key is how your applications authenticate wit
 
 1. Return to the dashboard
 
-   ![OpenAI Platform Dashboard](../screenshots/05_openai_platform_dashboard_return.png)
+   ![OpenAI Platform Dashboard](screenshots/05_openai_platform_dashboard_return.png)
 
 2. Navigate to **API Keys** section
 
 3. Click **Create new secret key**
 
-   ![OpenAI Create API Key](../screenshots/06_openai_quickstart_create_api_key.png)
+   ![OpenAI Create API Key](screenshots/06_openai_quickstart_create_api_key.png)
 
 4. **IMPORTANT:** Save your API key immediately!
 
-   ![OpenAI Save API Key Modal](../screenshots/07_openai_save_api_key_modal.png)
+   ![OpenAI Save API Key Modal](screenshots/07_openai_save_api_key_modal.png)
 
    ⚠️ **Warning:** You will only see this key once. Copy it to a secure location.
 
 5. Your key will appear in the API Keys list
 
-   ![OpenAI API Keys List](../screenshots/08_openai_api_keys_list.png)
+   ![OpenAI API Keys List](screenshots/08_openai_api_keys_list.png)
 
 ### 1.5 Setting Up Billing
 
@@ -135,7 +135,7 @@ To use the API beyond free credits:
 
 1. Go to **Billing** settings
 
-   ![OpenAI Billing Add Payment](../screenshots/09_openai_billing_add_payment_details.png)
+   ![OpenAI Billing Add Payment](screenshots/09_openai_billing_add_payment_details.png)
 
 2. Add your payment method
 3. Set up usage limits (recommended)
@@ -160,24 +160,24 @@ For Google Drive integration, you'll need OAuth 2.0 credentials.
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
 2. Create a new project or select an existing one
 
-   ![GCP Console Welcome](../screenshots/21_n8n_screen_01.png)
+   ![GCP Console Welcome](screenshots/21_n8n_screen_01.png)
 
 3. Navigate to **APIs & Services** > **Library** or search for "Google Auth Platform"
 
-   ![GCP Search for Google Auth Platform](../screenshots/22_n8n_screen_02.png)
+   ![GCP Search for Google Auth Platform](screenshots/22_n8n_screen_02.png)
 
 4. Click on **Google Auth Platform** from the search results
 5. Navigate to **APIs & Services** > **Credentials** (or use the Google Auth Platform sidebar)
 6. Click **Create Credentials** > **OAuth client ID**
 7. Select **Web application**
 
-   ![GCP OAuth Client Web App](../screenshots/01_gcp_oauth_client_web_app.png)
+   ![GCP OAuth Client Web App](screenshots/01_gcp_oauth_client_web_app.png)
 
 ### 2.2 Configuring OAuth Consent Screen
 
 Before creating OAuth credentials, you must configure the OAuth consent screen. If you haven't set this up yet, you'll see a message indicating it's not configured:
 
-![GCP OAuth Overview Not Configured](../screenshots/23_n8n_screen_03.png)
+![GCP OAuth Overview Not Configured](screenshots/23_n8n_screen_03.png)
 
 1. Click **Get started** or navigate to **OAuth consent screen** from the Google Auth Platform sidebar
 2. Select **External** user type (for most use cases)
@@ -185,7 +185,7 @@ Before creating OAuth credentials, you must configure the OAuth consent screen. 
    - **App name** - Choose a name for your application
    - **User support email** - Your email address
 
-   ![GCP OAuth Consent Screen App Information](../screenshots/24_n8n_screen_04.png)
+   ![GCP OAuth Consent Screen App Information](screenshots/24_n8n_screen_04.png)
 
 4. Complete the remaining steps:
    - **Audience** - Select who can use your app
@@ -200,17 +200,17 @@ Before you can use Google Drive with n8n, you must enable the Google Drive API i
 
 1. In the Google Cloud Console, use the search bar at the top to search for **"Google Drive API"**
 
-   ![GCP Search for Google Drive API](../screenshots/37_gcp_search_google_drive_api.png)
+   ![GCP Search for Google Drive API](screenshots/37_gcp_search_google_drive_api.png)
 
 2. Click on **Google Drive API** from the search results (it will appear in the "Top results" or "Marketplace" section)
 
 3. You'll be taken to the Google Drive API product details page. Click the blue **Enable** button to activate the API for your project
 
-   ![GCP Google Drive API Product Details](../screenshots/38_gcp_google_drive_api_product_details.png)
+   ![GCP Google Drive API Product Details](screenshots/38_gcp_google_drive_api_product_details.png)
 
 4. After enabling, you'll be redirected to the API/Service Details page where you can verify the API is enabled
 
-   ![GCP Google Drive API Enabled](../screenshots/39_gcp_google_drive_api_enabled.png)
+   ![GCP Google Drive API Enabled](screenshots/39_gcp_google_drive_api_enabled.png)
 
    ✅ **Verification:** You should see **Status: Enabled** on this page, confirming the API is active for your project.
 
@@ -220,7 +220,7 @@ Before you can use Google Drive with n8n, you must enable the Google Drive API i
 
 After creating your OAuth client, you'll see a confirmation modal with your Client ID and Client Secret:
 
-![GCP OAuth Client Created](../screenshots/27_n8n_screen_07.png)
+![GCP OAuth Client Created](screenshots/27_n8n_screen_07.png)
 
 **Important:** Save your Client ID and Client Secret immediately! You'll need these in Module 4.
 
@@ -231,7 +231,7 @@ Now, configure the authorized redirect URIs:
 3. Click **+ Add URI**
 4. Add the callback URL for n8n:
 
-   ![GCP OAuth Client Details with Redirect URIs](../screenshots/30_n8n_screen_10.png)
+   ![GCP OAuth Client Details with Redirect URIs](screenshots/30_n8n_screen_10.png)
 
 **For n8n Cloud users:** Use `https://oauth.n8n.cloud/oauth2/callback`
 
@@ -255,17 +255,17 @@ Now, configure the authorized redirect URIs:
 
 1. Navigate to [Google AI Studio](https://aistudio.google.com)
 
-   ![Google AI Studio Landing Page](../screenshots/17_google_ai_studio_landing_page.png)
+   ![Google AI Studio Landing Page](screenshots/17_google_ai_studio_landing_page.png)
 
 2. Sign in with your Google account
 
 3. Accept the welcome modal
 
-   ![Google AI Studio Welcome Modal](../screenshots/18_google_ai_studio_welcome_modal.png)
+   ![Google AI Studio Welcome Modal](screenshots/18_google_ai_studio_welcome_modal.png)
 
 ### 3.2 Dashboard Overview
 
-![Google AI Studio Home Dashboard](../screenshots/19_google_ai_studio_home_dashboard.png)
+![Google AI Studio Home Dashboard](screenshots/19_google_ai_studio_home_dashboard.png)
 
 The dashboard provides access to:
 - Model playground
@@ -276,11 +276,11 @@ The dashboard provides access to:
 
 1. Navigate to **API Keys**
 
-   ![Google AI Studio API Keys List](../screenshots/20_google_ai_studio_api_keys_list.png)
+   ![Google AI Studio API Keys List](screenshots/20_google_ai_studio_api_keys_list.png)
 
 2. Click **Create API Key**
 
-   ![Google AI Studio Create New API Key](../screenshots/31_google_ai_studio_create_new_api_key.png)
+   ![Google AI Studio Create New API Key](screenshots/31_google_ai_studio_create_new_api_key.png)
 
 3. Select or create a project
 
@@ -290,23 +290,23 @@ If your project requires billing:
 
 1. You may see a billing requirement message
 
-   ![GCP Project Has No Billing Account](../screenshots/32_gcp_project_has_no_billing_account.png)
+   ![GCP Project Has No Billing Account](screenshots/32_gcp_project_has_no_billing_account.png)
 
 2. Set up a billing account
 
-   ![GCP Set Billing Account](../screenshots/33_gcp_set_billing_account_for_project.png)
+   ![GCP Set Billing Account](screenshots/33_gcp_set_billing_account_for_project.png)
 
 3. View existing billing accounts
 
-   ![GCP Billing Account Management](../screenshots/34_gcp_billing_account_management_list.png)
+   ![GCP Billing Account Management](screenshots/34_gcp_billing_account_management_list.png)
 
 4. Create a new billing account if needed
 
-   ![GCP Create New Billing Account](../screenshots/35_gcp_create_new_billing_account_form.png)
+   ![GCP Create New Billing Account](screenshots/35_gcp_create_new_billing_account_form.png)
 
 5. Confirm your billing setup with free trial credit
 
-   ![GCP Billing Overview with Free Trial](../screenshots/36_gcp_billing_overview_with_free_trial_credit.png)
+   ![GCP Billing Overview with Free Trial](screenshots/36_gcp_billing_overview_with_free_trial_credit.png)
 
    ⚠️ **Important Note:** To move into Tier 1 (beyond free tier limits), you may need to add a credit card to your Google Cloud billing account. The free trial provides $300 in credits, but some services require a payment method on file to access Tier 1 quotas.
 
@@ -328,7 +328,7 @@ If your project requires billing:
 1. Log into your n8n instance
 2. View your workflows
 
-   ![n8n Overview Workflows List](../screenshots/10_n8n_overview_workflows_list.png)
+   ![n8n Overview Workflows List](screenshots/10_n8n_overview_workflows_list.png)
 
 ### 4.2 Setting Up Google Drive Credentials
 
@@ -336,11 +336,11 @@ If your project requires billing:
 2. Click **Add Credential**
 3. Search for **Google Drive**
 
-   ![n8n Add Credential Google Drive Search](../screenshots/11_n8n_add_credential_google_drive_search.png)
+   ![n8n Add Credential Google Drive Search](screenshots/11_n8n_add_credential_google_drive_search.png)
 
 4. Configure OAuth2 connection
 
-   ![n8n Google Drive OAuth2 Connection Form](../screenshots/12_n8n_google_drive_oauth2_connection_form.png)
+   ![n8n Google Drive OAuth2 Connection Form](screenshots/12_n8n_google_drive_oauth2_connection_form.png)
 
 5. Enter your credentials:
    - Client ID: `YOUR_CLIENT_ID_HERE`
@@ -351,11 +351,11 @@ If your project requires billing:
 1. Add a new credential
 2. Search for **OpenAI**
 
-   ![n8n Add Credential OpenAI Search](../screenshots/13_n8n_add_credential_openai_search.png)
+   ![n8n Add Credential OpenAI Search](screenshots/13_n8n_add_credential_openai_search.png)
 
 3. Configure the connection
 
-   ![n8n OpenAI Credential Connection Form](../screenshots/14_n8n_openai_credential_connection_form.png)
+   ![n8n OpenAI Credential Connection Form](screenshots/14_n8n_openai_credential_connection_form.png)
 
 4. Enter your API key: `YOUR_API_KEY_HERE`
 
@@ -366,13 +366,13 @@ For Google AI Studio API integration, you'll need to set up Header Auth credenti
 1. In n8n, go to **Credentials** and click **Add Credential**
 2. Search for **Header Auth**
 
-   ![n8n Add Credential Header Auth Search](../screenshots/15_n8n_add_credential_header_auth_search.png)
+   ![n8n Add Credential Header Auth Search](screenshots/15_n8n_add_credential_header_auth_search.png)
 
 3. Configure the header authentication:
    - **Name:** `x-goog-api-key`
    - **Value:** Your Google AI Studio API key (from Module 3.3)
 
-   ![n8n Header Auth Credential Connection Form](../screenshots/16_n8n_header_auth_credential_connection_form.png)
+   ![n8n Header Auth Credential Connection Form](screenshots/16_n8n_header_auth_credential_connection_form.png)
 
 4. Click **Save** to store the credential
 
@@ -435,7 +435,7 @@ The UGC Content Creation workflow is available as a premium digital asset and is
 1. Log into your n8n instance
 2. Click **Workflows** in the left sidebar (or use the **Overview** page)
 
-   ![n8n Overview Workflows List](../screenshots/10_n8n_overview_workflows_list.png)
+   ![n8n Overview Workflows List](screenshots/10_n8n_overview_workflows_list.png)
 
 3. Click the **Import** button (usually in the top right, or use the dropdown menu from the "Create Workflow" button)
 4. Choose one of these options:
@@ -468,7 +468,7 @@ The workflow uses OpenAI for persona generation, script extraction, and Sora 2 v
 
    > 💡 **Reference:** The credential selection interface will look similar to the OpenAI credential form you saw in Module 4.3. The dropdown will show all your saved OpenAI credentials.
 
-   ![n8n OpenAI Credential Connection Form](../screenshots/14_n8n_openai_credential_connection_form.png)
+   ![n8n OpenAI Credential Connection Form](screenshots/14_n8n_openai_credential_connection_form.png)
 
 4. For HTTP Request nodes using OpenAI API, look for **Authentication** → **Predefined Credential Type** → **OpenAI API**
 5. Repeat for all OpenAI-related nodes in the workflow
@@ -487,7 +487,7 @@ The workflow uses Google Drive to store generated videos:
 
    > 💡 **Reference:** The credential selection interface will look similar to the Google Drive credential form you saw in Module 4.2.
 
-   ![n8n Google Drive OAuth2 Connection Form](../screenshots/12_n8n_google_drive_oauth2_connection_form.png)
+   ![n8n Google Drive OAuth2 Connection Form](screenshots/12_n8n_google_drive_oauth2_connection_form.png)
 
 4. Complete the OAuth flow if prompted (this authorizes n8n to access your Google Drive)
    - You may be redirected to Google to authorize access
@@ -510,7 +510,7 @@ The workflow uses Google AI Studio (Gemini) for script generation and first fram
 
    > 💡 **Reference:** The credential selection interface will look similar to the Header Auth credential form you saw in Module 4.4.
 
-   ![n8n Header Auth Credential Connection Form](../screenshots/16_n8n_header_auth_credential_connection_form.png)
+   ![n8n Header Auth Credential Connection Form](screenshots/16_n8n_header_auth_credential_connection_form.png)
 
 5. Verify the header name is set to `x-goog-api-key` in the node configuration
 6. Repeat for both Gemini API nodes:
