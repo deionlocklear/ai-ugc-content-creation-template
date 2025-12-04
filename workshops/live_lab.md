@@ -1,6 +1,6 @@
-# 🎬 AI UGC Content Creation LiveLab
+# 🎬 AI UGC Content Creation Workshop
 
-> A comprehensive hands-on workshop for building AI-powered content creation workflows.
+> A comprehensive hands-on guide for building AI-powered content creation workflows.
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## Introduction
 
-Welcome to the **AI UGC Content Creation LiveLab**! This workshop will guide you through building a complete automated content creation pipeline using:
+Welcome to the **AI UGC Content Creation Workshop**! This guide will walk you through building a complete automated content creation pipeline using:
 
 - 🤖 **OpenAI** - For AI-powered text and image generation
 - ☁️ **Google Cloud Platform** - For OAuth authentication and Google Drive API
@@ -109,11 +109,11 @@ OpenAI provides:
 
 This is a critical step - your API key is how your applications authenticate with OpenAI.
 
-1. Return to the dashboard
+1. From the OpenAI Platform home page, click the **Settings gear icon** in the top right corner of the page
 
    ![OpenAI Platform Dashboard](../screenshots/05_openai_platform_dashboard_return.png)
 
-2. Navigate to **API Keys** section
+2. In the settings menu, navigate to **API Keys** section
 
 3. Click **Create new secret key**
 
@@ -153,29 +153,25 @@ To use the API beyond free credits:
 
 ---
 
-### 2.1 Creating OAuth Credentials
+### 2.1 Configuring OAuth Consent Screen
 
-For Google Drive integration, you'll need OAuth 2.0 credentials.
+**Important:** You must configure the OAuth consent screen BEFORE you can create OAuth client credentials. This is a required first step.
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
 2. Create a new project or select an existing one
 
    ![GCP Console Welcome](../screenshots/21_n8n_screen_01.png)
 
-3. Navigate to **APIs & Services** > **Library** or search for "Google Auth Platform"
+3. Use the **search bar at the top of the page** (not the library search) to search for **"Google Auth Platform"**
+
+   > ⚠️ **Important:** Use the search bar that appears at the top of the Google Cloud Console page, not any search bar that appears within the APIs & Services Library section.
 
    ![GCP Search for Google Auth Platform](../screenshots/22_n8n_screen_02.png)
 
 4. Click on **Google Auth Platform** from the search results
-5. Navigate to **APIs & Services** > **Credentials** (or use the Google Auth Platform sidebar)
-6. Click **Create Credentials** > **OAuth client ID**
-7. Select **Web application**
+5. Navigate to **OAuth consent screen** from the Google Auth Platform sidebar
 
-   ![GCP OAuth Client Web App](../screenshots/01_gcp_oauth_client_web_app.png)
-
-### 2.2 Configuring OAuth Consent Screen
-
-Before creating OAuth credentials, you must configure the OAuth consent screen. If you haven't set this up yet, you'll see a message indicating it's not configured:
+If you haven't set this up yet, you'll see a message indicating it's not configured:
 
 ![GCP OAuth Overview Not Configured](../screenshots/23_n8n_screen_03.png)
 
@@ -190,11 +186,60 @@ Before creating OAuth credentials, you must configure the OAuth consent screen. 
 4. Complete the remaining steps:
    - **Audience** - Select who can use your app
    - **Contact Information** - Add developer contact details
-5. Add scopes for Google Drive (if not already added):
-   - Look for scopes like `https://www.googleapis.com/auth/drive` or `https://www.googleapis.com/auth/drive.file`
-6. Complete the consent screen setup
+5. **Add scopes for Google Drive** - This is critical for Google Drive integration:
+   - In the OAuth consent screen configuration, navigate to the **Scopes** section
+   - Click **Add or Remove Scopes**
+   - Search for and select:
+     - `https://www.googleapis.com/auth/drive` (Full access to Google Drive)
+     - OR `https://www.googleapis.com/auth/drive.file` (Access to files created by the app)
+   - Click **Update** to save the scopes
 
-### 2.3 Enabling Google Drive API
+6. **Add Authorized Domains (for n8n Cloud users):**
+   - In the OAuth consent screen configuration, navigate to **Authorized domains**
+   - Click **Add Domain**
+   - Enter `n8n.cloud` (without https://)
+   - Click **Add**
+   - This is required for n8n Cloud to connect to your Google Drive
+
+7. Complete the consent screen setup
+
+> ⚠️ **Important:** Adding `n8n.cloud` to authorized domains is essential for n8n Cloud users. Without this, the Google Drive connection will fail even if you've added the correct scopes.
+
+### 2.2 Setting Authorized Redirect URIs
+
+Before creating your OAuth client, you should know what redirect URI you'll need. Configure this in the OAuth consent screen:
+
+1. In the OAuth consent screen configuration, navigate to **Authorized domains**
+2. For n8n Cloud users, you may need to add `n8n.cloud` as an authorized domain
+3. Note the redirect URI you'll use:
+   - **For n8n Cloud:** `https://oauth.n8n.cloud/oauth2/callback`
+   - **For self-hosted n8n:** Your n8n instance URL followed by `/rest/oauth2-credential/callback`
+
+### 2.3 Creating OAuth Credentials
+
+Now that the OAuth consent screen is configured, you can create your OAuth client credentials:
+
+1. In Google Auth Platform, navigate to **Clients** from the sidebar
+2. Click **Create Credentials** > **OAuth client ID**
+3. Select **Web application**
+
+   ![GCP OAuth Client Web App](../screenshots/01_gcp_oauth_client_web_app.png)
+
+4. Fill in the required fields:
+   - **Name** - Choose a name for your OAuth client (e.g., "Web client 1")
+   - **Authorized redirect URIs** - Add the callback URL:
+     - **For n8n Cloud:** `https://oauth.n8n.cloud/oauth2/callback`
+     - **For self-hosted n8n:** Your n8n instance URL followed by `/rest/oauth2-credential/callback`
+
+5. Click **Create**
+
+After creating your OAuth client, you'll see a confirmation modal with your Client ID and Client Secret:
+
+![GCP OAuth Client Created](../screenshots/27_n8n_screen_07.png)
+
+**Important:** Save your Client ID and Client Secret immediately! You'll need these in Module 4.
+
+### 2.4 Enabling Google Drive API
 
 Before you can use Google Drive with n8n, you must enable the Google Drive API in your GCP project:
 
@@ -215,29 +260,6 @@ Before you can use Google Drive with n8n, you must enable the Google Drive API i
    ✅ **Verification:** You should see **Status: Enabled** on this page, confirming the API is active for your project.
 
    ⚠️ **Note:** If you don't see the Enable button on the product details page, the API may already be enabled. You can verify this in the **APIs & Services** > **Enabled APIs** section.
-
-### 2.4 Setting Authorized Redirect URIs
-
-After creating your OAuth client, you'll see a confirmation modal with your Client ID and Client Secret:
-
-![GCP OAuth Client Created](../screenshots/27_n8n_screen_07.png)
-
-**Important:** Save your Client ID and Client Secret immediately! You'll need these in Module 4.
-
-Now, configure the authorized redirect URIs:
-
-1. Navigate to your OAuth client details page (you can access this from the **Clients** tab in Google Auth Platform)
-2. Scroll to the **Authorized redirect URIs** section
-3. Click **+ Add URI**
-4. Add the callback URL for n8n:
-
-   ![GCP OAuth Client Details with Redirect URIs](../screenshots/30_n8n_screen_10.png)
-
-**For n8n Cloud users:** Use `https://oauth.n8n.cloud/oauth2/callback`
-
-**For self-hosted n8n:** Use your n8n instance URL followed by `/rest/oauth2-credential/callback`
-
-5. Click **Save** to apply the changes
 
 > ⚠️ **Note:** It may take 5 minutes to a few hours for settings to take effect.
 
@@ -284,7 +306,9 @@ The dashboard provides access to:
 
 3. Select or create a project
 
-### 3.4 GCP Billing Setup (If Required)
+### 3.4 GCP Billing Setup (Required for Gemini API)
+
+⚠️ **Important:** To use the Gemini API (required for this workflow), you **must** have a billing account with a credit card attached. The Gemini API requires Tier 1 billing access.
 
 If your project requires billing:
 
@@ -292,7 +316,7 @@ If your project requires billing:
 
    ![GCP Project Has No Billing Account](../screenshots/32_gcp_project_has_no_billing_account.png)
 
-2. Set up a billing account
+2. Set up a billing account with a credit card
 
    ![GCP Set Billing Account](../screenshots/33_gcp_set_billing_account_for_project.png)
 
@@ -300,9 +324,11 @@ If your project requires billing:
 
    ![GCP Billing Account Management](../screenshots/34_gcp_billing_account_management_list.png)
 
-4. Create a new billing account if needed
+4. Create a new billing account if needed (requires credit card)
 
    ![GCP Create New Billing Account](../screenshots/35_gcp_create_new_billing_account_form.png)
+
+> 💡 **Note:** You may need to add a credit card to move into Tier 1 billing, which is required for Gemini API access.
 
 5. Confirm your billing setup with free trial credit
 
@@ -414,7 +440,7 @@ The **"Automate UGC Content Creation with N8N and Sora 2"** workflow automates t
 
 ### 5.2 Obtaining the Workflow
 
-The UGC Content Creation workflow is available as a premium digital asset and is **not included** in this public repository.
+The UGC Content Creation workflow is available as a premium digital asset.
 
 **To obtain the workflow:**
 
@@ -423,10 +449,9 @@ The UGC Content Creation workflow is available as a premium digital asset and is
 3. Extract the contents, which include:
    - `ugc_workflow.json` - The complete n8n workflow file
    - `README.md` - Setup and usage instructions
-   - `workshop_link.md` - Link to this GitHub workshop repository
+   - Link to this workshop guide
 
-4. Open `ugc_workflow.json` in a text editor
-5. Copy the entire JSON contents (or use the file directly)
+4. Locate the `ugc_workflow.json` file in the extracted package
 
    > **Note:** The workflow file contains all nodes, connections, and configurations. You'll need to update the credentials after importing.
 
@@ -437,12 +462,13 @@ The UGC Content Creation workflow is available as a premium digital asset and is
 
    ![n8n Overview Workflows List](../screenshots/10_n8n_overview_workflows_list.png)
 
-3. Click the **Import** button (usually in the top right, or use the dropdown menu from the "Create Workflow" button)
-4. Choose one of these options:
-   - **Paste JSON:** Paste the workflow JSON directly
-   - **Upload File:** Upload the `ugc_workflow.json` file
-5. Click **Import** to add the workflow to n8n
-6. The workflow will appear in your workflows list
+3. Click the **three dots menu (⋮)** in the top right corner of the workflows page
+4. Select **Import from File** from the dropdown menu
+5. Choose the `ugc_workflow.json` file from your downloaded package
+6. Click **Import** to add the workflow to n8n
+7. The workflow will appear in your workflows list
+
+   > **Alternative:** You can also use **Paste JSON** option if you prefer to copy and paste the workflow JSON directly.
 
 ### 5.4 Updating Workflow Nodes with Your Credentials
 
@@ -457,6 +483,7 @@ The workflow uses OpenAI for persona generation, script extraction, and Sora 2 v
 - **"Extract Prompts"** - Extracts and formats video script prompts
 
 **HTTP Request Nodes (OpenAI API):**
+- **"generate_ad_prompts"** - This is an HTTP Request node that may show a red error indicator until configured
 - **"Generate Video With SORA"** - Creates videos using Sora 2
 - **"Get Video Creation Status"** - Checks video generation status
 - **"Download Video"** - Downloads completed videos
@@ -465,13 +492,13 @@ The workflow uses OpenAI for persona generation, script extraction, and Sora 2 v
 1. Click on each OpenAI node in the workflow
 2. In the node configuration panel, find the **Credential** dropdown
 3. Select your **OpenAI credential** (created in Module 4.3)
-
-   > 💡 **Reference:** The credential selection interface will look similar to the OpenAI credential form you saw in Module 4.3. The dropdown will show all your saved OpenAI credentials.
-
-   ![n8n OpenAI Credential Connection Form](../screenshots/14_n8n_openai_credential_connection_form.png)
-
 4. For HTTP Request nodes using OpenAI API, look for **Authentication** → **Predefined Credential Type** → **OpenAI API**
 5. Repeat for all OpenAI-related nodes in the workflow
+
+> ⚠️ **Sora Verification Note:** If you've never used Sora before, you may need to verify your OpenAI organization. If the "Generate Video With SORA" step fails, n8n will display an error message indicating what the issue may be. Common issues include:
+> - Organization verification required
+> - API access not enabled for your account
+> - Billing setup incomplete
 
 #### 5.4.2 Update Google Drive Nodes
 
@@ -484,15 +511,15 @@ The workflow uses Google Drive to store generated videos:
 1. Click on the **"upload_video"** node in the workflow
 2. In the node configuration panel, find the **Credential** dropdown
 3. Select your **Google Drive OAuth2 credential** (created in Module 4.2)
-
-   > 💡 **Reference:** The credential selection interface will look similar to the Google Drive credential form you saw in Module 4.2.
-
-   ![n8n Google Drive OAuth2 Connection Form](../screenshots/12_n8n_google_drive_oauth2_connection_form.png)
-
 4. Complete the OAuth flow if prompted (this authorizes n8n to access your Google Drive)
    - You may be redirected to Google to authorize access
    - Click **Allow** to grant permissions
 5. **Optional:** Update the folder path in the node configuration if you want videos saved to a specific Google Drive folder
+
+> ⚠️ **Important:** If you're using n8n Cloud and having trouble connecting Google Drive, make sure you've:
+> - Added Google Drive scopes in the OAuth consent screen (Module 2.1)
+> - Added `n8n.cloud` to the **Authorized domains** in your OAuth consent screen configuration
+> - Used the **Google Drive OAuth2** credential type (not the generic Google OAuth)
 
 #### 5.4.3 Update Google AI Studio (Gemini) Nodes
 
@@ -505,13 +532,8 @@ The workflow uses Google AI Studio (Gemini) for script generation and first fram
 **Steps to Update:**
 1. Click on each HTTP Request node that calls Gemini API (look for URLs containing `generativelanguage.googleapis.com`)
 2. In the node configuration, find the **Authentication** section
-3. Select **Generic Credential Type** → **HTTP Header Auth**
+3. Select **Generic Credential Type** → **Header Auth**
 4. Choose your **Header Auth credential** with `x-goog-api-key` (created in Module 4.4)
-
-   > 💡 **Reference:** The credential selection interface will look similar to the Header Auth credential form you saw in Module 4.4.
-
-   ![n8n Header Auth Credential Connection Form](../screenshots/16_n8n_header_auth_credential_connection_form.png)
-
 5. Verify the header name is set to `x-goog-api-key` in the node configuration
 6. Repeat for both Gemini API nodes:
    - `generate_ad_prompts` (Gemini 2.5 Pro)
